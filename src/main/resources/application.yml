@@ -1,2 +1,17 @@
 greeting:
   message: "hello"
+
+quarkus:
+  datasource:
+    db-kind: postgresql
+    password: devpassword
+    database: devdb
+    username: Developer
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/devdb
+      driver: org.postgresql.Driver
+
+  flyway:
+    migrate-at-start: true
+  http:
+    port: 8080
