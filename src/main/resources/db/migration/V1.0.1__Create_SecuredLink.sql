@@ -1,0 +1,9 @@
+CREATE TABLE SecuredLink (
+    id BIGINT PRIMARY KEY,
+    accessKey VARCHAR(255) NOT NULL,
+    secondFactorKey VARCHAR(255) NOT NULL,
+    targetLink VARCHAR(255) NOT NULL,
+    hasBeenAccessed BOOLEAN DEFAULT FALSE
+);
+
+CREATE SEQUENCE SecuredLink_SEQ START WITH 1 INCREMENT BY 50;
