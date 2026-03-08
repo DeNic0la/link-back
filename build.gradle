@@ -27,6 +27,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-jackson'
     implementation 'io.quarkus:quarkus-mailer'
     implementation 'io.quarkus:quarkus-kubernetes-config'
+    implementation 'io.quarkus:quarkus-elytron-security-common'
     implementation 'io.quarkus:quarkus-arc'
     implementation 'io.quarkus:quarkus-hibernate-orm'
     testImplementation 'io.quarkus:quarkus-junit'
