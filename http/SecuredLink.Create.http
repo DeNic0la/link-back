@@ -1,0 +1,20 @@
+
+### Request without second factor key
+POST http://{{API_BASE_URL}}/secured/
+Content-Type: application/json
+Accept: application/json
+
+{
+    "accessKey": "test-01",
+    "targetLink": "https://www.example.com/secret-page"
+}
+
+### Request with second factor key
+POST http://{{API_BASE_URL}}/secured/
+Content-Type: application/json
+
+{
+    "accessKey": "test-02",
+    "targetLink": "https://gogle.com/search?q=secret+page",
+    "secondFactorKey": "123456"
+}

@@ -30,22 +30,24 @@ Quarkus testing is used with JUnit 5 and RestAssured.
   - Use `io.restassured.RestAssured` for testing REST endpoints.
 - **Example Test**:
   ```java
-  package ch.denic0la;
+  package ch.denic0la.controller;
 
   import io.quarkus.test.junit.QuarkusTest;
   import org.junit.jupiter.api.Test;
   import static io.restassured.RestAssured.given;
-  import static org.hamcrest.CoreMatchers.is;
+  import static org.hamcrest.CoreMatchers.notNullValue;
 
   @QuarkusTest
-  public class MyResourceTest {
+  public class SecuredLinkControllerTest {
       @Test
       public void testEndpoint() {
           given()
-            .when().get("/hello")
+            .contentType("application/json")
+            .body("{\"targetLink\": \"https://google.com\"}")
+            .when().post("/secured-links")
             .then()
-               .statusCode(200)
-               .body(is("Hello from Quarkus REST"));
+               .statusCode(201)
+               .body("accessKey", notNullValue());
       }
   }
   ```
@@ -53,6 +55,31 @@ Quarkus testing is used with JUnit 5 and RestAssured.
 #### 3. Additional Development Information
 
 - **Code Style**: Follow standard Java coding conventions. The project uses Jakarta EE annotations (e.g., `@ApplicationScoped`, `@Inject`, `@Path`).
-- **Database Access**: Hibernate ORM with Panache is used for database operations. See `MyEntity.java` for an example of a Panache entity.
+- **Database Access**: Hibernate ORM with Panache is used for database operations. See `SecuredLink.java` for an example of a Panache entity.
 - **Migrations**: Database migrations are managed by Flyway. Place new migration scripts in `src/main/resources/db/migration`.
+- **Mock Data**: For development and testing, 100 entries are provided in `src/main/resources/import.sql`.
 - **Docker**: Multiple Dockerfiles are available in `src/main/docker/` for different deployment targets (JVM, Native, etc.).
+
+#### 4. Secured Link Logic
+
+The application provides a REST controller, `SecuredLinkController`, to manage secured links.
+
+##### Entity: `SecuredLink`
+
+- `accessKey`: (String, Unique) A unique identifier for the link.
+- `secondFactorKey`: (String, Hashed) A 6-digit PIN, stored as a BCrypt hash.
+- `targetLink`: (String) The destination URL.
+- `hasBeenAccessed`: (Boolean) Tracks if the link has been used (defaults to `false`).
+
+##### Controller: `SecuredLinkController`
+
+- `POST /secured-links`: Creates a new secured link.
+    - `accessKey`: Optional. If provided, it must be alphanumeric (spaces are replaced with `-`). If not provided, a random 8-character alphanumeric string is generated.
+    - `secondFactorKey`: Optional. Must be exactly 6 digits. If not provided, a random 6-digit PIN is generated.
+    - `targetLink`: Mandatory.
+    - **Response**: Includes the `accessKey`, `secondFactorKeyRaw` (the unhashed PIN), `secondFactorKeyHashed`, `targetLink`, and `accessLink`.
+- `GET /secured-links/{accessKey}`: Retrieves a `SecuredLink` by its access key.
+
+##### Configuration
+
+- `app.base-url`: Required. Used to construct the `accessLink` in the response. It is validated at startup to ensure it's not blank.

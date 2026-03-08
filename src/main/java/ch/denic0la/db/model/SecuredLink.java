@@ -1,4 +1,4 @@
-package ch.denic0la;
+package ch.denic0la.db.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
@@ -6,7 +6,7 @@ import jakarta.persistence.Column;
 
 @Entity
 public class SecuredLink extends PanacheEntity {
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     public String accessKey;
 
     @Column(nullable = false)

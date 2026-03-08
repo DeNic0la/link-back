@@ -1,10 +1,5 @@
 
 quarkus:
-  log:
-    level: DEBUG
-    console:
-      color: true
-
   datasource:
     db-kind: postgresql
     password: devpassword

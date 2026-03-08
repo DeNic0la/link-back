@@ -30,6 +30,11 @@ dependencies {
     implementation 'io.quarkus:quarkus-elytron-security-common'
     implementation 'io.quarkus:quarkus-arc'
     implementation 'io.quarkus:quarkus-hibernate-orm'
+/*    implementation 'com.aventrix.jnanoid:jnanoid:2.0.0'
+    implementation 'com.bucket4j:bucket4j-core:8.10.1'
+    implementation 'com.bucket4j:bucket4j-caffeine:8.10.1'
+    implementation 'io.quarkus:quarkus-cache'
+    implementation 'io.quarkus:quarkus-vertx'*/
     testImplementation 'io.quarkus:quarkus-junit'
     testImplementation 'io.rest-assured:rest-assured'
 }

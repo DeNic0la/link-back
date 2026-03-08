@@ -1,4 +1,4 @@
-package ch.denic0la.migrations;
+package ch.denic0la.db;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

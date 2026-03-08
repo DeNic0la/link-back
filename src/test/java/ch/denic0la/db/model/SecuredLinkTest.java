@@ -1,4 +1,4 @@
-package ch.denic0la;
+package ch.denic0la.db.model;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.transaction.Transactional;
@@ -11,8 +11,9 @@ public class SecuredLinkTest {
     @Test
     @Transactional
     public void testSecuredLinkPersistence() {
+        String uniqueKey = "testAccessKey-" + System.currentTimeMillis();
         SecuredLink link = new SecuredLink();
-        link.accessKey = "testAccessKey";
+        link.accessKey = uniqueKey;
         link.secondFactorKey = "hashedKey";
         link.targetLink = "https://example.com";
         link.hasBeenAccessed = false;
@@ -22,7 +23,7 @@ public class SecuredLinkTest {
 
         SecuredLink retrieved = SecuredLink.findById(link.id);
         assertNotNull(retrieved);
-        assertEquals("testAccessKey", retrieved.accessKey);
+        assertEquals(uniqueKey, retrieved.accessKey);
         assertEquals("hashedKey", retrieved.secondFactorKey);
         assertEquals("https://example.com", retrieved.targetLink);
         assertFalse(retrieved.hasBeenAccessed);
