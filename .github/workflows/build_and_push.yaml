@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        buildCommand: ['./gradlew imageBuild', 'docker build -t link-back src/main/docker/Dockerfile.multistage']
+        buildCommand: ['./gradlew imageBuild', 'docker build -t link-back -f src/main/docker/Dockerfile.multistage']
     runs-on: ubuntu-latest
     permissions:
       id-token: write
