@@ -26,8 +26,10 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 2400
-      - name: Build with Maven
-        run: ./gradlew imageBuild
+#      - name: Build with Gradlew
+#        run: ./gradlew imageBuild
+      - name: Build image
+        run: docker build -t registry.digitalocean.com/denic0la-ocean/link-back:${{ env.IMAGE_TAG }} src/main/docker/Dockerfile.multistage
       - name: Push image to DigitalOcean Container Registry
         id: push
         run: |
