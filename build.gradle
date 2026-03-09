@@ -38,6 +38,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-container-image-jib'
     testImplementation 'io.quarkus:quarkus-junit'
     testImplementation 'io.rest-assured:rest-assured'
+    testImplementation "io.quarkus:quarkus-jdbc-postgresql"
 }
 
 group = 'ch.denic0la'

@@ -10,7 +10,7 @@ quarkus:
       driver: org.postgresql.Driver
 
   flyway:
-    migrate-at-start: true
+    migrate-at-start: false
   http:
     port: 8080
 
