@@ -1,9 +1,9 @@
 
 quarkus:
-  kubernetes:
-    init-task-defaults:
-      wait-for-container:
-        image: "groundnuty/k8s-wait-for:no-root-v1.7"
+#  kubernetes:
+#    init-task-defaults:
+#      wait-for-container:
+#        image: "groundnuty/k8s-wait-for:no-root-v1.7"
   log:
     file:
       enabled: false
@@ -13,14 +13,7 @@ quarkus:
       json:
         enabled: true
         pretty-print: true
-        time-zone: UTC+01:00
         date-time-format: dd-MM-yyyy'T'HH:mm:ss.SSSXXX
-        exception-format-enabled: true
-        exception-format-json-pretty-print: true
-        exception-format-stack-trace-enabled: true
-        exception-format-stack-trace-json-pretty-print: true
-        exception-format-stack-trace-short-enabled: true
-        exception-format-stack-trace-short-json-pretty-print: true
         print-details: true
     syslog:
       enabled: false
@@ -33,26 +26,3 @@ quarkus:
 
 app:
   base-url: http://localhost:8080
-  ratelimit:
-    default:
-      capacity: 20
-      refill-period: 1m
-    overrides:
-      "/api/create":
-        capacity: 5
-        refill-period: 5m
-      "/api/login":
-        capacity: 3
-        refill-period: 1m
-tracking:
-  enabled: true
-  ip:
-    enabled: true
-    base-penalty: 100
-    exponential-penalty: 3
-    linear-penalty: 250
-  access-key:
-    enabled: true
-    base-penalty: 100
-    exponential-penalty: 2
-    linear-penalty: 250

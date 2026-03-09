@@ -26,7 +26,7 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured-links")
+                .when().post("/secured")
                 .then()
                 .statusCode(201)
                 .body("accessKey", is(expectedAccessKey))
@@ -47,7 +47,7 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured-links")
+                .when().post("/secured")
                 .then()
                 .statusCode(201)
                 .body("accessKey", notNullValue())
@@ -68,7 +68,7 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured-links")
+                .when().post("/secured")
                 .then()
                 .statusCode(400);
     }
@@ -85,7 +85,7 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured-links")
+                .when().post("/secured")
                 .then()
                 .statusCode(400);
     }
@@ -104,17 +104,17 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured-links")
+                .when().post("/secured")
                 .then()
                 .statusCode(201);
 
         given()
-                .when().get("/secured-links/" + key)
+                .queryParam("secondFactorKey", "111222")
+                .when().get("/secured/" + key)
                 .then()
                 .statusCode(200)
                 .body("accessKey", is(key))
-                .body("targetLink", is("https://example.com"))
-                .body("secondFactorKey", notNullValue()); // Hashed in entity
+                .body("targetLink", is("https://example.com"));
     }
 
     @Test
@@ -130,24 +130,113 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured-links")
+                .when().post("/secured")
                 .then()
                 .statusCode(201);
 
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured-links")
+                .when().post("/secured")
                 .then()
                 .statusCode(409)
-                .body(is("accessKey already exists"));
+                .body("message", containsString("Resource already exists"));
     }
 
     @Test
     public void testGetSecuredLink_NotFound() {
         given()
-                .when().get("/secured-links/non-existent")
+                .queryParam("secondFactorKey", "123456")
+                .when().get("/secured/non-existent")
                 .then()
                 .statusCode(404);
+    }
+
+    @Test
+    public void testCreateSecuredLink_InvalidUrl() {
+        String json = """
+                {
+                    "targetLink": "not-a-url"
+                }
+                """;
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(json)
+                .when().post("/secured")
+                .then()
+                .statusCode(400);
+    }
+
+    @Test
+    public void testCreateSecuredLink_MissingTargetLink() {
+        String json = """
+                {
+                    "accessKey": "no-target"
+                }
+                """;
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(json)
+                .when().post("/secured")
+                .then()
+                .statusCode(400);
+    }
+
+    @Test
+    public void testGetSecuredLink_InvalidPin() {
+        String key = "pin-key-" + System.currentTimeMillis();
+        String json = """
+                {
+                    "accessKey": "%s",
+                    "secondFactorKey": "111222",
+                    "targetLink": "https://example.com"
+                }
+                """.formatted(key);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(json)
+                .when().post("/secured")
+                .then()
+                .statusCode(201);
+
+        given()
+                .queryParam("secondFactorKey", "wrong!")
+                .when().get("/secured/" + key)
+                .then()
+                .statusCode(400); // Because of SecondFactorKey validation on QueryParam
+
+        given()
+                .queryParam("secondFactorKey", "654321")
+                .when().get("/secured/" + key)
+                .then()
+                .statusCode(401)
+                .body("error", is("Invalid second factor key"));
+    }
+
+    @Test
+    public void testGetSecuredLink_MissingPin() {
+        String key = "missing-pin-" + System.currentTimeMillis();
+        String json = """
+                {
+                    "accessKey": "%s",
+                    "secondFactorKey": "111222",
+                    "targetLink": "https://example.com"
+                }
+                """.formatted(key);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(json)
+                .when().post("/secured")
+                .then()
+                .statusCode(201);
+
+        given()
+                .when().get("/secured/" + key)
+                .then()
+                .statusCode(400);
     }
 }
