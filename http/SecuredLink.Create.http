@@ -1,6 +1,6 @@
 
 ### Request without second factor key
-POST http://{{API_BASE_URL}}/secured/
+POST http://{{API_BASE_URL}}/api/secured/
 Content-Type: application/json
 Accept: application/json
 
@@ -10,7 +10,7 @@ Accept: application/json
 }
 
 ### Request with second factor key
-POST http://{{API_BASE_URL}}/secured/
+POST http://{{API_BASE_URL}}/api/secured/
 Content-Type: application/json
 
 {

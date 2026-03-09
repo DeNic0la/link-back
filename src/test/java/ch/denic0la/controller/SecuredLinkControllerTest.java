@@ -26,14 +26,14 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured")
+                .when().post("/api/secured")
                 .then()
                 .statusCode(201)
                 .body("accessKey", is(expectedAccessKey))
                 .body("secondFactorKeyRaw", is("123456"))
                 .body("secondFactorKeyHashed", notNullValue())
                 .body("targetLink", is("https://google.com"))
-                .body("accessLink", containsString("http://localhost:8081/secured/" + expectedAccessKey));
+                .body("accessLink", containsString("http://localhost:8081/api/secured/" + expectedAccessKey));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured")
+                .when().post("/api/secured")
                 .then()
                 .statusCode(201)
                 .body("accessKey", notNullValue())
@@ -68,7 +68,7 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured")
+                .when().post("/api/secured")
                 .then()
                 .statusCode(400);
     }
@@ -85,7 +85,7 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured")
+                .when().post("/api/secured")
                 .then()
                 .statusCode(400);
     }
@@ -104,13 +104,13 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured")
+                .when().post("/api/secured")
                 .then()
                 .statusCode(201);
 
         given()
                 .queryParam("secondFactorKey", "111222")
-                .when().get("/secured/" + key)
+                .when().get("/api/secured/" + key)
                 .then()
                 .statusCode(200)
                 .body("accessKey", is(key))
@@ -130,14 +130,14 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured")
+                .when().post("/api/secured")
                 .then()
                 .statusCode(201);
 
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured")
+                .when().post("/api/secured")
                 .then()
                 .statusCode(409)
                 .body("message", containsString("Resource already exists"));
@@ -147,7 +147,7 @@ public class SecuredLinkControllerTest {
     public void testGetSecuredLink_NotFound() {
         given()
                 .queryParam("secondFactorKey", "123456")
-                .when().get("/secured/non-existent")
+                .when().get("/api/secured/non-existent")
                 .then()
                 .statusCode(404);
     }
@@ -163,7 +163,7 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured")
+                .when().post("/api/secured")
                 .then()
                 .statusCode(400);
     }
@@ -179,7 +179,7 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured")
+                .when().post("/api/secured")
                 .then()
                 .statusCode(400);
     }
@@ -198,19 +198,19 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured")
+                .when().post("/api/secured")
                 .then()
                 .statusCode(201);
 
         given()
                 .queryParam("secondFactorKey", "wrong!")
-                .when().get("/secured/" + key)
+                .when().get("/api/secured/" + key)
                 .then()
                 .statusCode(400); // Because of SecondFactorKey validation on QueryParam
 
         given()
                 .queryParam("secondFactorKey", "654321")
-                .when().get("/secured/" + key)
+                .when().get("/api/secured/" + key)
                 .then()
                 .statusCode(401)
                 .body("error", is("Invalid second factor key"));
@@ -230,12 +230,12 @@ public class SecuredLinkControllerTest {
         given()
                 .contentType(ContentType.JSON)
                 .body(json)
-                .when().post("/secured")
+                .when().post("/api/secured")
                 .then()
                 .statusCode(201);
 
         given()
-                .when().get("/secured/" + key)
+                .when().get("/api/secured/" + key)
                 .then()
                 .statusCode(400);
     }

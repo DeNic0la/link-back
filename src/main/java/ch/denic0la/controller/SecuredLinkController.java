@@ -69,7 +69,7 @@ public class SecuredLinkController {
             this.secondFactorKeyRaw = rawKey;
             this.secondFactorKeyHashed = link.secondFactorKey;
             this.targetLink = link.targetLink;
-            this.accessLink = normalizedBaseUrl + "/secured/" + link.accessKey;
+            this.accessLink = normalizedBaseUrl + "/api/secured/" + link.accessKey;
         }
     }
 
