@@ -57,7 +57,6 @@ Quarkus testing is used with JUnit 5 and RestAssured.
 - **Code Style**: Follow standard Java coding conventions. The project uses Jakarta EE annotations (e.g., `@ApplicationScoped`, `@Inject`, `@Path`).
 - **Database Access**: Hibernate ORM with Panache is used for database operations. See `SecuredLink.java` for an example of a Panache entity.
 - **Migrations**: Database migrations are managed by Flyway. Place new migration scripts in `src/main/resources/db/migration`.
-- **Mock Data**: For development and testing, 100 entries are provided in `src/main/resources/import.sql`.
 - **Docker**: Multiple Dockerfiles are available in `src/main/docker/` for different deployment targets (JVM, Native, etc.).
 
 #### 4. Secured Link Logic

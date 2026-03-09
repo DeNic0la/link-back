@@ -28,7 +28,7 @@ jobs:
         run: doctl registry login --expiry-seconds 2400
       - name: Build image
         run: |
-          ./gradlew build -x test \
+          ./gradlew build \
           -Dquarkus.container-image.build=true \
           -Dquarkus.container-image.tag=${{ env.IMAGE_TAG }}
       - name: Push image to DigitalOcean Container Registry

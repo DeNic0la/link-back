@@ -33,7 +33,7 @@ public class SecuredLinkControllerTest {
                 .body("secondFactorKeyRaw", is("123456"))
                 .body("secondFactorKeyHashed", notNullValue())
                 .body("targetLink", is("https://google.com"))
-                .body("accessLink", containsString("http://localhost:8080/secured/" + expectedAccessKey));
+                .body("accessLink", containsString("http://localhost:8081/secured/" + expectedAccessKey));
     }
 
     @Test

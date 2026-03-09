@@ -1,18 +1,14 @@
 
 quarkus:
   datasource:
-    db-kind: postgresql
-    password: devpassword
-    database: devdb
-    username: Developer
+    db-kind: h2
     jdbc:
-      url: jdbc:postgresql://localhost:5432/devdb
-      driver: org.postgresql.Driver
+      url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
 
   flyway:
-    migrate-at-start: false
+    migrate-at-start: true
   http:
-    port: 8080
+    port: 8081
 
 app:
-  base-url: http://localhost:8080
+  base-url: http://localhost:8081
