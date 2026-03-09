@@ -35,6 +35,7 @@ dependencies {
     implementation 'com.bucket4j:bucket4j-caffeine:8.10.1'
     implementation 'io.quarkus:quarkus-cache'
     implementation 'io.quarkus:quarkus-vertx'
+    implementation 'io.quarkus:quarkus-container-image-jib'
     testImplementation 'io.quarkus:quarkus-junit'
     testImplementation 'io.rest-assured:rest-assured'
 }

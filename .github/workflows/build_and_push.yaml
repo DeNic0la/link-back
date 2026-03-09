@@ -7,9 +7,6 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        buildCommand: ['./gradlew imageBuild', 'docker build -t link-back -f src/main/docker/Dockerfile.multistage']
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -29,10 +26,11 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 2400
-#      - name: Build with Gradlew
-#        run: ./gradlew imageBuild
       - name: Build image
-        run: ${{ matrix.buildCommand }}
+        run: |
+          ./gradlew build \
+          -Dquarkus.container-image.build=true \
+          -Dquarkus.container-image.tag=${{ env.IMAGE_TAG }}
       - name: Push image to DigitalOcean Container Registry
         id: push
         run: |
