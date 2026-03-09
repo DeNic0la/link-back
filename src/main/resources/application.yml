@@ -1,7 +1,9 @@
 
 quarkus:
   package:
-    type: fast-jar
+    jar:
+      enabled: true
+      type: fast-jar
   container-image:
     builder: jib
     group: "denic0la-ocean"
