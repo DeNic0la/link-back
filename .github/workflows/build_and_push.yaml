@@ -7,6 +7,9 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        buildCommand: ['./gradlew imageBuild', 'docker build -t link-back src/main/docker/Dockerfile.multistage']
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -29,7 +32,7 @@ jobs:
 #      - name: Build with Gradlew
 #        run: ./gradlew imageBuild
       - name: Build image
-        run: docker build -t registry.digitalocean.com/denic0la-ocean/link-back:${{ env.IMAGE_TAG }} src/main/docker/Dockerfile.multistage
+        run: ${{ matrix.buildCommand }}
       - name: Push image to DigitalOcean Container Registry
         id: push
         run: |
